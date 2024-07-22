@@ -2,6 +2,16 @@ jobs:
   rspec:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: app_test
+
     env:
       DATABASE_DB: app_test
       DATABASE_HOST: localhost
@@ -11,16 +21,6 @@ jobs:
     steps:
       # ソースコードのチェックアウト
       - uses: actions/checkout@v3
-
-      # PostgreSQLのセットアップ
-      - name: Set up PostgreSQL
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql postgresql-contrib
-          sudo service postgresql start
-          sudo -u postgres psql -c "CREATE USER postgres WITH SUPERUSER PASSWORD 'password';"
-          sudo -u postgres psql -c "CREATE DATABASE app_test;"
-
       # Ruby 3.2.2のセットアップ
       - uses: ruby/setup-ruby@v1
         with:
