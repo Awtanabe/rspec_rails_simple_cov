@@ -18,3 +18,6 @@ comment: # レポート内容をコメント投稿設定
 report: # レポートの出力設定
   datastores:
     - artifact://${GITHUB_REPOSITORY} # レポートの出力先（GitHub ActionsのArtifactsに保存する）
+diff:
+  datastores:
+    - artifact://${GITHUB_REPOSITORY}
