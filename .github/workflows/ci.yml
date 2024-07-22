@@ -56,3 +56,5 @@ jobs:
       # octocovによりカバレッジレポートをPRコメントで表示
       - name: Coverage Report by octocov (in this pull request)
         uses: k1LoW/octocov-action@v0
+        with:
+          github_token: ${{ secrets.ACTIONS_TOKEN }}
