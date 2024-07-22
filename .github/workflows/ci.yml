@@ -13,19 +13,18 @@ jobs:
       # Ruby 3.2.2, Node 18の環境をセットアップ
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.2.2
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      # RSpecを実行するための環境をセットアップ
-      - run: gem install bundler:2.4.22
-      - run: ./bin/bundle install
-      - run: ./bin/yarn install
-      - run: ./bin/rails db:create
-      - run: ./bin/rails db:migrate
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Setup database
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+          bundle exec rails db:migrate
+
       - name: Exec rspec
-        run: ./bin/rspec
-+     # octocovによりカバレッジレポートをPRコメントで表示
-+     - name: Coverage Report by octocov (in this pull request)
-+       uses: k1LoW/octocov-action@v0
+        run: bundle exec rspec
+      # octocovによりカバレッジレポートをPRコメントで表示
+      - name: Coverage Report by octocov (in this pull request)
+        uses: k1LoW/octocov-action@v0
