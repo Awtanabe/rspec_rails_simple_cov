@@ -1,0 +1,57 @@
+name: Rspec
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: app_test
+
+    env:
+      DATABASE_DB: app_test
+      DATABASE_HOST: localhost
+      DATABASE_PASSWORD: password
+      DATABASE_USER: postgres
+      GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+
+    steps:
+      # ソースコードのチェックアウト
+      - uses: actions/checkout@v3
+
+      # Ruby 3.2.2のセットアップ
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.4
+
+      # 依存関係のインストール
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install
+          yarn install
+
+      # データベースのセットアップ
+      - name: Setup database
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+          bundle exec rails db:migrate
+
+      # RSpecの実行
+      - name: Exec rspec
+        run: bundle exec rspec
+
+      - name: Coverage Report by octocov
+        uses: k1LoW/octocov-action@v0
