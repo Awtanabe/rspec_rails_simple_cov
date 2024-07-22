@@ -10,21 +10,37 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      # Ruby 3.2.2, Node 18の環境をセットアップ
+      # ソースコードのチェックアウト
       - uses: actions/checkout@v3
+
+      # Ruby 3.2.2のセットアップ
       - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
 
+      # Node 18のセットアップ
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 依存関係のインストール
       - name: Install dependencies
-        run: bundle install
+        run: |
+          gem install bundler:2.4.22
+          bundle install
+          yarn install
 
+      # データベースのセットアップ
       - name: Setup database
         run: |
           bundle exec rails db:create
           bundle exec rails db:schema:load
           bundle exec rails db:migrate
 
+      # RSpecの実行
       - name: Exec rspec
         run: bundle exec rspec
+
       # octocovによりカバレッジレポートをPRコメントで表示
       - name: Coverage Report by octocov (in this pull request)
         uses: k1LoW/octocov-action@v0
