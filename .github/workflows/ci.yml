@@ -3,7 +3,7 @@ name: Rspec
 on:
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   rspec:
@@ -18,10 +18,10 @@ jobs:
         with:
           ruby-version: 3.2.2
 
-      # Node 18のセットアップ
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
+      # # Node 18のセットアップ
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 18
 
       # 依存関係のインストール
       - name: Install dependencies
