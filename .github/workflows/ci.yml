@@ -24,7 +24,7 @@ jobs:
       DATABASE_HOST: localhost
       DATABASE_PASSWORD: password
       DATABASE_USER: postgres
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
 
     steps:
       # ソースコードのチェックアウト
