@@ -1,7 +1,12 @@
+name: Rspec
+
+on: [push]
+
 jobs:
   rspec:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
     services:
       postgres:
         image: postgres:latest
@@ -21,6 +26,7 @@ jobs:
     steps:
       # ソースコードのチェックアウト
       - uses: actions/checkout@v3
+
       # Ruby 3.2.2のセットアップ
       - uses: ruby/setup-ruby@v1
         with:
