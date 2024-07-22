@@ -6,6 +6,12 @@ jobs:
   rspec:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      DATABASE_DB: app_test
+      DATABASE_HOST: localhost
+      DATABASE_PASSWORD: password
+      DATABASE_USER: postgres
+
     steps:
       # ソースコードのチェックアウト
       - uses: actions/checkout@v3
